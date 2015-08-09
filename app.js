@@ -24,9 +24,10 @@ app.get('/', function(req, res) {
 });
 
 var port = process.env.PORT || 8080;
+var counter = 0;
 
 var j = schedule.scheduleJob('*/10 * * * * *', function(){
-    console.log('Every 10 seconds');
+    console.log('Every 10 seconds', counter++);
 });
 
 var server = app.listen(port, function () {
