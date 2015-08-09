@@ -1,0 +1,35 @@
+[aws:autoscaling:asg]
+Custom Availability Zones=
+MaxSize=1
+MinSize=1
+
+[aws:autoscaling:launchconfiguration]
+EC2KeyName=
+InstanceType=t1.micro
+AWSEBCloudwatchAlarmHigh=false
+
+[aws:autoscaling:updatepolicy:rollingupdate]
+RollingUpdateEnabled=false
+
+[aws:ec2:vpc]
+Subnets=
+VPCId=
+
+[aws:elasticbeanstalk:application]
+Application Healthcheck URL=
+
+[aws:elasticbeanstalk:container:nodejs]
+GzipCompression=true
+NodeCommand=
+NodeVersion=0.12.6
+ProxyServer=nginx
+
+[aws:elasticbeanstalk:hostmanager]
+LogPublicationControl=false
+
+[aws:elasticbeanstalk:monitoring]
+Automatically Terminate Unhealthy Instances=true
+
+[aws:elasticbeanstalk:sns:topics]
+Notification Endpoint=
+Notification Protocol=email
