@@ -31,7 +31,7 @@ var j = schedule.scheduleJob('*/59 * * * * *', function(){
     sns.publish({
         'Message': 'Track Inventory',
         'Subject': 'Track Inventory',
-        'TopicArn': snsTopic
+        'TopicArn': 'arn:aws:sns:us-east-1:419997458948:mmx-track-inv'
     }, function(err, data) {
         if (err) {
             console.log('SNS Error: ' + err);
