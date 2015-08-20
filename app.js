@@ -5,8 +5,8 @@ var schedule = require('node-schedule');
 
 AWS.config.region = process.env.REGION;
 
-var sns = new AWS.SNS();
-var snsTopic =  process.env.WEBCRON_TOPIC;
+var sns = new AWS.SNS({region:"us-east-1"});
+var snsTopic =  process.env.TRACK_INV_TOPIC;
 var app = express();
 
 app.set('view engine', 'ejs');
@@ -26,8 +26,20 @@ app.get('/', function(req, res) {
 var port = process.env.PORT || 8080;
 var counter = 0;
 
-var j = schedule.scheduleJob('*/10 * * * * *', function(){
+var j = schedule.scheduleJob('*/59 * * * * *', function(){
     console.log('Every 10 seconds: ', counter++);
+    sns.publish({
+        'Message': 'Track Inventory',
+        'Subject': 'Track Inventory',
+        'TopicArn': snsTopic
+    }, function(err, data) {
+        if (err) {
+            console.log('SNS Error: ' + err);
+        } else {
+            console.log('SNS Success: ' + err);
+        }
+    });
+
 });
 
 var server = app.listen(port, function () {
