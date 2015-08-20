@@ -10,7 +10,10 @@ var AWSSecretKey = 'tWB+HL08yO8+JIiUxAF0MDOGe0P40i5XaQ1LkPHk';
 var sns = new AWS.SNS({region:"us-east-1",
         'accessKeyId': AWSAccessKeyId,
         'secretAccessKey': AWSSecretKey});
-var snsTopic =  process.env.TRACK_INV_TOPIC || 'arn:aws:sns:us-east-1:419997458948:mmx-track-inv';
+var snsInvTopic =  process.env.TRACK_INV_TOPIC || 'arn:aws:sns:us-east-1:419997458948:mmx-track-inv';
+var snsImpTopic =  process.env.TRACK_INV_TOPIC || 'arn:aws:sns:us-east-1:419997458948:mmx-track-imp';
+var snsClickTopic =  process.env.TRACK_INV_TOPIC || 'arn:aws:sns:us-east-1:419997458948:mmx-track-click';
+var snsQuartileTopic =  process.env.TRACK_INV_TOPIC || 'arn:aws:sns:us-east-1:419997458948:mmx-track-quartile';
 var app = express();
 
 app.set('view engine', 'ejs');
@@ -30,21 +33,71 @@ app.get('/', function(req, res) {
 var port = process.env.PORT || 8080;
 var counter = 0;
 
-var j = schedule.scheduleJob('*/30 * * * * *', function(){
-    console.log('Every 10 seconds: ', counter++);
+var invSchedule = schedule.scheduleJob('*/1 * * * *', function(){
+    console.log('Track Inventory Every 60 seconds: ', counter++);
     sns.publish({
         'Message': 'Track Inventory',
         'Subject': 'Track Inventory',
-        'TopicArn': snsTopic
+        'TopicArn': snsInvTopic
     }, function(err, data) {
         if (err) {
             console.log('SNS Error: ' + err);
         } else {
-            console.log('SNS Success: ' + data);
+            console.log('SNS Success: ');
+            console.log(data);
         }
     });
-
 });
+
+var impSchedule = schedule.scheduleJob('*/2 * * * *', function(){
+    console.log('Track Impression Every 120 seconds: ', counter++);
+    sns.publish({
+        'Message': 'Track Impression',
+        'Subject': 'Track Impression',
+        'TopicArn': snsImpTopic
+    }, function(err, data) {
+        if (err) {
+            console.log('SNS Error: ' + err);
+        } else {
+            console.log('SNS Success: ');
+            console.log(data);
+        }
+    });
+});
+
+var clickSchedule = schedule.scheduleJob('*/5 * * * *', function(){
+    console.log('Track Click Every 300 seconds: ', counter++);
+    sns.publish({
+        'Message': 'Track Click',
+        'Subject': 'Track Click',
+        'TopicArn': snsClickTopic
+    }, function(err, data) {
+        if (err) {
+            console.log('SNS Error: ' + err);
+        } else {
+            console.log('SNS Success: ');
+            console.log(data);
+        }
+    });
+});
+
+var quartileSchedule = schedule.scheduleJob('*/1 * * * *', function(){
+    console.log('Track Quartile Every 10 seconds: ', counter++);
+    sns.publish({
+        'Message': 'Track Quartile',
+        'Subject': 'Track Quartile',
+        'TopicArn': snsQuartileTopic
+    }, function(err, data) {
+        if (err) {
+            console.log('SNS Error: ' + err);
+        } else {
+            console.log('SNS Success: ');
+            console.log(data);
+        }
+    });
+});
+
+
 
 var server = app.listen(port, function () {
     console.log('Server running on port' + port + '/');
