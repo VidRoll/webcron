@@ -5,8 +5,12 @@ var schedule = require('node-schedule');
 
 AWS.config.region = process.env.REGION;
 
-var sns = new AWS.SNS({region:"us-east-1"});
-var snsTopic =  process.env.TRACK_INV_TOPIC;
+var AWSAccessKeyId = 'AKIAIWGHZLU3QW3GIUTQ';
+var AWSSecretKey = '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';
+var sns = new AWS.SNS({region:"us-east-1",
+        'accessKeyId': AWSAccessKeyId,
+        'secretAccessKey': AWSSecretKey});
+var snsTopic =  process.env.TRACK_INV_TOPIC || 'arn:aws:sns:us-east-1:419997458948:mmx-track-inv';
 var app = express();
 
 app.set('view engine', 'ejs');
@@ -26,17 +30,17 @@ app.get('/', function(req, res) {
 var port = process.env.PORT || 8080;
 var counter = 0;
 
-var j = schedule.scheduleJob('*/59 * * * * *', function(){
+var j = schedule.scheduleJob('*/30 * * * * *', function(){
     console.log('Every 10 seconds: ', counter++);
     sns.publish({
         'Message': 'Track Inventory',
         'Subject': 'Track Inventory',
-        'TopicArn': 'arn:aws:sns:us-east-1:419997458948:mmx-track-inv'
+        'TopicArn': snsTopic
     }, function(err, data) {
         if (err) {
             console.log('SNS Error: ' + err);
         } else {
-            console.log('SNS Success: ' + err);
+            console.log('SNS Success: ' + data);
         }
     });
 
