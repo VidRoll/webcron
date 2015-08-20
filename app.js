@@ -11,9 +11,9 @@ var sns = new AWS.SNS({region:"us-east-1",
         'accessKeyId': AWSAccessKeyId,
         'secretAccessKey': AWSSecretKey});
 var snsInvTopic =  process.env.TRACK_INV_TOPIC || 'arn:aws:sns:us-east-1:419997458948:mmx-track-inv';
-var snsImpTopic =  process.env.TRACK_INV_TOPIC || 'arn:aws:sns:us-east-1:419997458948:mmx-track-imp';
-var snsClickTopic =  process.env.TRACK_INV_TOPIC || 'arn:aws:sns:us-east-1:419997458948:mmx-track-click';
-var snsQuartileTopic =  process.env.TRACK_INV_TOPIC || 'arn:aws:sns:us-east-1:419997458948:mmx-track-quartile';
+var snsImpTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-imp';
+var snsClickTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-click';
+var snsQuartileTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-quartile';
 var app = express();
 
 app.set('view engine', 'ejs');
