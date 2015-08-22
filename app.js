@@ -33,8 +33,8 @@ app.get('/', function(req, res) {
 var port = process.env.PORT || 8080;
 var counter = 0;
 
-var invSchedule = schedule.scheduleJob('*/30 * * * * *', function(){
-    console.log('Track Inventory Every 30 seconds: ', counter++);
+var invSchedule = schedule.scheduleJob('*/10 * * * * *', function(){
+    console.log('Track Inventory Every 5 seconds: ', counter++);
     sns.publish({
         'Message': 'Track Inventory',
         'Subject': 'Track Inventory',
@@ -49,7 +49,7 @@ var invSchedule = schedule.scheduleJob('*/30 * * * * *', function(){
     });
 });
 
-var impSchedule = schedule.scheduleJob('*/1 * * * *', function(){
+var impSchedule = schedule.scheduleJob('*/30 * * * * *', function(){
     console.log('Track Impression Every 60 seconds: ', counter++);
     sns.publish({
         'Message': 'Track Impression',
@@ -81,7 +81,7 @@ var clickSchedule = schedule.scheduleJob('*/5 * * * *', function(){
     });
 });
 
-var quartileSchedule = schedule.scheduleJob('*/45 * * * * *', function(){
+var quartileSchedule = schedule.scheduleJob('*/20 * * * * *', function(){
     console.log('Track Quartile Every 60 seconds: ', counter++);
     sns.publish({
         'Message': 'Track Quartile',
