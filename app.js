@@ -5,8 +5,8 @@ var schedule = require('node-schedule');
 
 AWS.config.region = process.env.REGION;
 
-var AWSAccessKeyId = 'AKIAIWGHZLU3QW3GIUTQ';
-var AWSSecretKey = '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';
+var AWSAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
+var AWSSecretKey = process.env.AWS_SECRET_KEY;
 var sns = new AWS.SNS({region:"us-east-1",
         'accessKeyId': AWSAccessKeyId,
         'secretAccessKey': AWSSecretKey});
