@@ -49,7 +49,7 @@ var invSchedule = schedule.scheduleJob('*/5 * * * * *', function(){
     });
 });
 
-var impSchedule = schedule.scheduleJob('*/30 * * * * *', function(){
+var impSchedule = schedule.scheduleJob('*/1 * * * *', function(){
     console.log('Track Impression Every 60 seconds: ', counter++);
     sns.publish({
         'Message': 'Track Impression',
@@ -81,7 +81,7 @@ var clickSchedule = schedule.scheduleJob('*/5 * * * *', function(){
     });
 });
 
-var quartileSchedule = schedule.scheduleJob('*/15 * * * * *', function(){
+var quartileSchedule = schedule.scheduleJob('*/45 * * * * *', function(){
     console.log('Track Quartile Every 60 seconds: ', counter++);
     sns.publish({
         'Message': 'Track Quartile',
