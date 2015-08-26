@@ -14,6 +14,12 @@ var snsInvTopic =  process.env.TRACK_INV_TOPIC || 'arn:aws:sns:us-east-1:4199974
 var snsImpTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-imp';
 var snsClickTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-click';
 var snsQuartileTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-quartile';
+
+var invScheduleTime = process.env.INV_SCHEDULE || '*/5 * * * * *';
+var impScheduleTime = process.env.IMP_SCHEDULE || '*/1 * * * *';
+var clickScheduleTime = process.env.CLICK_SCHEDULE || '*/5 * * * *';
+var quartileScheduleTime = process.env.QUARTILE_SCHEDULE || '*/45 * * * * *';
+
 var app = express();
 
 app.set('view engine', 'ejs');
@@ -33,7 +39,7 @@ app.get('/', function(req, res) {
 var port = process.env.PORT || 8080;
 var counter = 0;
 
-var invSchedule = schedule.scheduleJob('*/5 * * * * *', function(){
+var invSchedule = schedule.scheduleJob(invScheduleTime, function(){
     console.log('Track Inventory Every 5 seconds: ', counter++);
     sns.publish({
         'Message': 'Track Inventory',
@@ -49,7 +55,7 @@ var invSchedule = schedule.scheduleJob('*/5 * * * * *', function(){
     });
 });
 
-var impSchedule = schedule.scheduleJob('*/1 * * * *', function(){
+var impSchedule = schedule.scheduleJob(impScheduleTime, function(){
     console.log('Track Impression Every 60 seconds: ', counter++);
     sns.publish({
         'Message': 'Track Impression',
@@ -65,7 +71,7 @@ var impSchedule = schedule.scheduleJob('*/1 * * * *', function(){
     });
 });
 
-var clickSchedule = schedule.scheduleJob('*/5 * * * *', function(){
+var clickSchedule = schedule.scheduleJob(clickScheduleTime, function(){
     console.log('Track Click Every 300 seconds: ', counter++);
     sns.publish({
         'Message': 'Track Click',
@@ -81,7 +87,7 @@ var clickSchedule = schedule.scheduleJob('*/5 * * * *', function(){
     });
 });
 
-var quartileSchedule = schedule.scheduleJob('*/45 * * * * *', function(){
+var quartileSchedule = schedule.scheduleJob(quartileScheduleTime, function(){
     console.log('Track Quartile Every 60 seconds: ', counter++);
     sns.publish({
         'Message': 'Track Quartile',
