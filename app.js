@@ -15,7 +15,7 @@ var snsImpTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-imp';
 var snsClickTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-click';
 var snsQuartileTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-quartile';
 
-var invScheduleTime = '*/5 * * * * *';
+var invScheduleTime = '*/1 * * * * *';
 var impScheduleTime = '*/10 * * * * *';
 var clickScheduleTime = '*/1 * * * *';
 var quartileScheduleTime = '*/3 * * * * *';
