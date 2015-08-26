@@ -15,10 +15,10 @@ var snsImpTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-imp';
 var snsClickTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-click';
 var snsQuartileTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-quartile';
 
-var invScheduleTime = process.env.INV_SCHEDULE || '*/5 * * * * *';
-var impScheduleTime = process.env.IMP_SCHEDULE || '*/1 * * * *';
-var clickScheduleTime = process.env.CLICK_SCHEDULE || '*/5 * * * *';
-var quartileScheduleTime = process.env.QUARTILE_SCHEDULE || '*/45 * * * * *';
+var invScheduleTime = '*/5 * * * * *';
+var impScheduleTime = '*/10 * * * * *';
+var clickScheduleTime = '*/1 * * * *';
+var quartileScheduleTime = '*/3 * * * * *';
 
 var app = express();
 
