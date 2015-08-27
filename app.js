@@ -18,7 +18,7 @@ var snsQuartileTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-quartile';
 var invScheduleTime = '*/1 * * * * *';
 var impScheduleTime = '*/10 * * * * *';
 var clickScheduleTime = '*/1 * * * *';
-var quartileScheduleTime = '*/3 * * * * *';
+var quartileScheduleTime = '*/2 * * * * *';
 
 var app = express();
 
@@ -41,6 +41,19 @@ var counter = 0;
 
 var invSchedule = schedule.scheduleJob(invScheduleTime, function(){
     console.log('Track Inventory Every 5 seconds: ', counter++);
+    sns.publish({
+        'Message': 'Track Inventory',
+        'Subject': 'Track Inventory',
+        'TopicArn': snsInvTopic
+    }, function(err, data) {
+        if (err) {
+            console.log('SNS Error: ' + err);
+        } else {
+            console.log('SNS Success: ');
+            console.log(data);
+        }
+    });
+
     sns.publish({
         'Message': 'Track Inventory',
         'Subject': 'Track Inventory',
