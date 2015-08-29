@@ -18,7 +18,7 @@ var snsQuartileTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-quartile';
 var invScheduleTime = '*/1 * * * * *';
 var impScheduleTime = '*/10 * * * * *';
 var clickScheduleTime = '*/1 * * * *';
-var quartileScheduleTime = '*/2 * * * * *';
+var quartileScheduleTime = '*/1 * * * * *';
 
 var app = express();
 
@@ -39,81 +39,46 @@ app.get('/', function(req, res) {
 var port = process.env.PORT || 8080;
 var counter = 0;
 
+function sendSNSTopic(msg, subj, topic) {
+    sns.publish({
+        'Message': msg,
+        'Subject': subj,
+        'TopicArn': topic
+    }, function(err, data) {
+        if (err) {
+            console.log(subj,' SNS Error: ' + err);
+        } else {
+            console.log(subj, ' SNS Success: ');
+            console.log(data);
+        }
+    });
+}
+
 var invSchedule = schedule.scheduleJob(invScheduleTime, function(){
     console.log('Track Inventory Every 5 seconds: ', counter++);
-    sns.publish({
-        'Message': 'Track Inventory',
-        'Subject': 'Track Inventory',
-        'TopicArn': snsInvTopic
-    }, function(err, data) {
-        if (err) {
-            console.log('SNS Error: ' + err);
-        } else {
-            console.log('SNS Success: ');
-            console.log(data);
-        }
-    });
 
-    sns.publish({
-        'Message': 'Track Inventory',
-        'Subject': 'Track Inventory',
-        'TopicArn': snsInvTopic
-    }, function(err, data) {
-        if (err) {
-            console.log('SNS Error: ' + err);
-        } else {
-            console.log('SNS Success: ');
-            console.log(data);
-        }
-    });
+    sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
+    sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
+    sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
+    sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
 });
 
 var impSchedule = schedule.scheduleJob(impScheduleTime, function(){
     console.log('Track Impression Every 60 seconds: ', counter++);
-    sns.publish({
-        'Message': 'Track Impression',
-        'Subject': 'Track Impression',
-        'TopicArn': snsImpTopic
-    }, function(err, data) {
-        if (err) {
-            console.log('SNS Error: ' + err);
-        } else {
-            console.log('SNS Success: ');
-            console.log(data);
-        }
-    });
+    
+    sendSNSTopic('Track Impression', 'Track Impression', snsImpTopic);
 });
 
 var clickSchedule = schedule.scheduleJob(clickScheduleTime, function(){
     console.log('Track Click Every 300 seconds: ', counter++);
-    sns.publish({
-        'Message': 'Track Click',
-        'Subject': 'Track Click',
-        'TopicArn': snsClickTopic
-    }, function(err, data) {
-        if (err) {
-            console.log('SNS Error: ' + err);
-        } else {
-            console.log('SNS Success: ');
-            console.log(data);
-        }
-    });
+    
+    sendSNSTopic('Track Click', 'Track Click', snsClickTopic);
 });
 
 var quartileSchedule = schedule.scheduleJob(quartileScheduleTime, function(){
     console.log('Track Quartile Every 60 seconds: ', counter++);
-    sns.publish({
-        'Message': 'Track Quartile',
-        'Subject': 'Track Quartile',
-        'TopicArn': snsQuartileTopic
-    }, function(err, data) {
-        if (err) {
-            console.log('SNS Error: ' + err);
-        } else {
-            console.log('SNS Success: ');
-            console.log(data);
-        }
-    });
+    
+    sendSNSTopic('Track Quartile', 'Track Quartile', snsQuartileTopic);
 });
 
 
