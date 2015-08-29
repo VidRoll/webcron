@@ -16,7 +16,7 @@ var snsClickTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-click';
 var snsQuartileTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-quartile';
 
 var invScheduleTime = '*/1 * * * * *';
-var impScheduleTime = '*/10 * * * * *';
+var impScheduleTime = '*/5 * * * * *';
 var clickScheduleTime = '*/1 * * * *';
 var quartileScheduleTime = '*/1 * * * * *';
 
@@ -55,8 +55,6 @@ function sendSNSTopic(msg, subj, topic) {
 }
 
 var invSchedule = schedule.scheduleJob(invScheduleTime, function(){
-    console.log('Track Inventory Every 5 seconds: ', counter++);
-
     sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
     sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
     sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
@@ -64,20 +62,14 @@ var invSchedule = schedule.scheduleJob(invScheduleTime, function(){
 });
 
 var impSchedule = schedule.scheduleJob(impScheduleTime, function(){
-    console.log('Track Impression Every 60 seconds: ', counter++);
-    
     sendSNSTopic('Track Impression', 'Track Impression', snsImpTopic);
 });
 
 var clickSchedule = schedule.scheduleJob(clickScheduleTime, function(){
-    console.log('Track Click Every 300 seconds: ', counter++);
-    
     sendSNSTopic('Track Click', 'Track Click', snsClickTopic);
 });
 
 var quartileSchedule = schedule.scheduleJob(quartileScheduleTime, function(){
-    console.log('Track Quartile Every 60 seconds: ', counter++);
-    
     sendSNSTopic('Track Quartile', 'Track Quartile', snsQuartileTopic);
 });
 
