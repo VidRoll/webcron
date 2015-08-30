@@ -59,6 +59,9 @@ var invSchedule = schedule.scheduleJob(invScheduleTime, function(){
     sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
     sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
     sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
+    sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
+    sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
+    sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
 });
 
 var impSchedule = schedule.scheduleJob(impScheduleTime, function(){
@@ -70,6 +73,7 @@ var clickSchedule = schedule.scheduleJob(clickScheduleTime, function(){
 });
 
 var quartileSchedule = schedule.scheduleJob(quartileScheduleTime, function(){
+    sendSNSTopic('Track Quartile', 'Track Quartile', snsQuartileTopic);
     sendSNSTopic('Track Quartile', 'Track Quartile', snsQuartileTopic);
 });
 
