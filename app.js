@@ -14,6 +14,8 @@ var snsInvTopic =  process.env.TRACK_INV_TOPIC || 'arn:aws:sns:us-east-1:4199974
 var snsImpTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-imp';
 var snsClickTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-click';
 var snsQuartileTopic =  'arn:aws:sns:us-east-1:419997458948:mmx-track-quartile';
+var snsJutInvTopic = 'arn:aws:sns:us-east-1:419997458948:jut-track-inv';
+var snsJutImpTopic = 'arn:aws:sns:us-east-1:419997458948:jut-track-imp';
 
 var invScheduleTime = '*/1 * * * * *';
 var impScheduleTime = '*/5 * * * * *';
@@ -62,10 +64,16 @@ var invSchedule = schedule.scheduleJob(invScheduleTime, function(){
     sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
     sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
     sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
+
+    sendSNSTopic('Track Inventory', 'Track Inventory', snsJutInvTopic);
+    sendSNSTopic('Track Inventory', 'Track Inventory', snsJutInvTopic);
 });
 
 var impSchedule = schedule.scheduleJob(impScheduleTime, function(){
     sendSNSTopic('Track Impression', 'Track Impression', snsImpTopic);
+    sendSNSTopic('Track Impression', 'Track Impression', snsImpTopic);
+
+    sendSNSTopic('Track Impression', 'Track Impression', snsJutImpTopic);
 });
 
 var clickSchedule = schedule.scheduleJob(clickScheduleTime, function(){
