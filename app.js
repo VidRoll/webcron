@@ -65,15 +65,15 @@ var invSchedule = schedule.scheduleJob(invScheduleTime, function(){
     sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
     sendSNSTopic('Track Inventory', 'Track Inventory', snsInvTopic);
 
-    sendSNSTopic('Track Inventory', 'Track Inventory', snsJutInvTopic);
-    sendSNSTopic('Track Inventory', 'Track Inventory', snsJutInvTopic);
+    /*sendSNSTopic('Track Inventory', 'Track Inventory', snsJutInvTopic);
+    sendSNSTopic('Track Inventory', 'Track Inventory', snsJutInvTopic);*/
 });
 
 var impSchedule = schedule.scheduleJob(impScheduleTime, function(){
     sendSNSTopic('Track Impression', 'Track Impression', snsImpTopic);
     sendSNSTopic('Track Impression', 'Track Impression', snsImpTopic);
 
-    sendSNSTopic('Track Impression', 'Track Impression', snsJutImpTopic);
+    /*sendSNSTopic('Track Impression', 'Track Impression', snsJutImpTopic);*/
 });
 
 var clickSchedule = schedule.scheduleJob(clickScheduleTime, function(){
