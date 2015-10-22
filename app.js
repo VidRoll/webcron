@@ -1,8 +1,11 @@
+var s3 = require('s3');
+var mkdirp = require('mkdirp');
 var AWS = require('aws-sdk');
 var express = require('express');
 var bodyParser = require('body-parser');
 var schedule = require('node-schedule');
-cors = require('cors');
+var cors = require('cors');
+var fs = require('fs');
 
 AWS.config.region = process.env.REGION;
 
@@ -25,6 +28,22 @@ var quartileScheduleTime = '*/1 * * * * *';
 
 var app = express();
 
+
+var client = s3.createClient({
+  maxAsyncS3: 20,     // this is the default
+  s3RetryCount: 3,    // this is the default
+  s3RetryDelay: 1000, // this is the default
+  multipartUploadThreshold: 20971520, // this is the default (20 MB)
+  multipartUploadSize: 15728640, // this is the default (15 MB)
+  s3Options: {
+    accessKeyId: "AKIAJG6DLQ2XKZQSUUMA",
+    secretAccessKey: "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"
+    // any other options are passed to new AWS.S3()
+    // See: http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html#constructor-property
+  },
+});
+
+
 app.set('view engine', 'ejs');
 app.use('/static', express.static(__dirname + '/static'));
 app.use('/', express.static(__dirname + '/static'));
@@ -34,12 +53,51 @@ app.set('views', __dirname + '/views');
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:false}));
 
+// app.get('/', function(req, res) {
+//     res.render('index', {
+//         static_path: 'static',
+//         theme: process.env.THEME || 'flatly',
+//         flask_debug: process.env.FLASK_DEBUG || 'false'
+//     });
+// });
+
 app.get('/', function(req, res) {
-    res.render('index', {
-        static_path: 'static',
-        theme: process.env.THEME || 'flatly',
-        flask_debug: process.env.FLASK_DEBUG || 'false'
+    res.setHeader('content-type', 'text/xml');
+    var q = require('url').parse(req.url,true).query;
+    mkdirp.sync(__dirname + '/vids')
+    var file = __dirname + '/vids/'+q.vid +".json"
+    // 1. go to s3 and get file
+    var params = {
+      localFile: file,
+      s3Params: {
+        // https://s3-us-west-2.amazonaws.com/vidroll-reportal/vids/entity-vidroll-NJisK89ge.json
+        Bucket: "vidroll-reportal",
+        Key: "vids/"+q.vid+".json"
+        // other options supported by getObject
+        // See: http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#getObject-property
+      },
+    };
+    var downloader = client.downloadFile(params);
+    downloader.on('error', function(err) {
+      console.error("unable to download:", err.stack);
     });
+    downloader.on('progress', function() {
+      console.log("progress", downloader.progressAmount, downloader.progressTotal);
+    });
+    // 2. parse file for first url in entities array
+    downloader.on('end', function() {
+      var url = JSON.parse(fs.readFileSync(file),"utf8").entities[0];
+      var macrosArray = url.split("=_")
+      console.log('macrosArray', macrosArray)
+      for (var i=1; i<macrosArray.length; i++) {
+        var macro = macrosArray[i].split("_")[0].toLowerCase()
+        macrosArray[i] = "="+q[macro]+macrosArray[i].split("_")[1]
+      }
+      res.redirect(macrosArray.join(""))
+    });
+    // 3. based on url, create redirect
+    // 4. redirect
+    
 });
 
 app.get('/vast', function(req, res) {
@@ -68,6 +126,19 @@ http://search.spotxchange.com/vast/2.00/101663?VPI=MP4&content_page_url=[LR_URL]
 
 
 });
+
+app.get('/vid', function(req, res) {
+    res.setHeader('content-type', 'text/xml');
+    var q = require('url').parse(req.url,true).query;
+    res.redirect('http://search.spotxchange.com/vast/2.00/'+q.id+"?VPI=MP4&content_page_url="+q.url+"&site[cat]="+q.cat+"&device[dnt]=0&ip_addr="+q.ip+"&device[ua]="+q.ua+"&cb="+q.cb+"&player_width="+q.w+"&player_height="+q.h);
+/*
+http://search.spotxchange.com/vast/2.00/101663?VPI=MP4&content_page_url=[LR_URL]&site[cat]=[LR_CATEGORIES]&device[dnt]=0&ip_addr=[LR_IP]&device[ua]=[LR_USERAGENT]&cb=[TIMESTAMP]&player_width=[LR_WIDTH]&player_height=[LR_WIDTH]
+*/    
+
+
+});
+
+
 
 
 var port = process.env.PORT || 3000;

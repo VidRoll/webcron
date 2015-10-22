@@ -1,0 +1,7 @@
+{
+	"entities": [
+		"http://search.spotxchange.com/vast/2.00/79391?VPAID=1&content_page_url=_PAGEURL_&cb=_CACHEBUSTER_&player_width=_WIDTH_&player_height=_HEIGHT_&vid_duration=_DURATION_&vid_url=_VIDURL_&vid_id=_VIDID_&vid_title=_VIDTITLE_&vid_description=_VIDDESCRIPTION_&content_type=_CONTENTTYPE_"
+	],
+	"formula": "IMP * 5",
+	"name": "123"
+}

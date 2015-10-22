@@ -8,7 +8,9 @@
     "cors": "^2.7.1",
     "ejs": "latest",
     "express": "latest",
-    "node-schedule": "^0.2.9"
+    "mkdirp": "^0.5.1",
+    "node-schedule": "^0.2.9",
+    "s3": "^4.4.0"
   },
   "scripts": {
     "start": "node app.js"
