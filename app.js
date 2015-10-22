@@ -51,7 +51,7 @@ app.get('/vast', function(req, res) {
 app.get('/slvpaid', function(req, res) {
     res.setHeader('content-type', 'text/xml');
     var q = require('url').parse(req.url,true).query;
-    res.redirect('http://search.spotxchange.com/vast/2.00/'+q.id+'?VPAID=1&content_page_url='+q.url+'&cb='+q.cb+'&player_width='+q.w+'&player_height=q.h';
+    res.redirect('http://search.spotxchange.com/vast/2.00/'+q.id+'?VPAID=1&content_page_url='+q.url+'&cb='+q.cb+'&player_width='+q.w+'&player_height=q.h');
 /*
 http://search.spotxchange.com/vast/2.00/<%= query.id %>?VPAID=1&content_page_url=<%= query.url %>&cb=<%= query.cb %>&player_width=<%= query.w %>&player_height=<%= query.h %>
 */
