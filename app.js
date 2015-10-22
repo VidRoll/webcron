@@ -48,6 +48,28 @@ app.get('/vast', function(req, res) {
     res.render('vast',{query:query});
 });
 
+app.get('/slvpaid', function(req, res) {
+    res.setHeader('content-type', 'text/xml');
+    var q = require('url').parse(req.url,true).query;
+    res.redirect('http://search.spotxchange.com/vast/2.00/'+q.id+'?VPAID=1&content_page_url='+q.url+'&cb='+q.cb+'&player_width='+q.w+'&player_height=q.h';
+/*
+http://search.spotxchange.com/vast/2.00/<%= query.id %>?VPAID=1&content_page_url=<%= query.url %>&cb=<%= query.cb %>&player_width=<%= query.w %>&player_height=<%= query.h %>
+*/
+    
+});
+
+app.get('/slvast', function(req, res) {
+    res.setHeader('content-type', 'text/xml');
+    var q = require('url').parse(req.url,true).query;
+    res.redirect('http://search.spotxchange.com/vast/2.00/'+q.id+"?VPI=MP4&content_page_url="+q.url+"&site[cat]="+q.cat+"&device[dnt]=0&ip_addr="+q.ip+"&device[ua]="+q.ua+"&cb="+q.cb+"&player_width="+q.w+"&player_height="+q.h);
+/*
+http://search.spotxchange.com/vast/2.00/101663?VPI=MP4&content_page_url=[LR_URL]&site[cat]=[LR_CATEGORIES]&device[dnt]=0&ip_addr=[LR_IP]&device[ua]=[LR_USERAGENT]&cb=[TIMESTAMP]&player_width=[LR_WIDTH]&player_height=[LR_WIDTH]
+*/    
+
+
+});
+
+
 var port = process.env.PORT || 3000;
 var counter = 0;
 
