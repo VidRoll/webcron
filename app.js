@@ -2,6 +2,7 @@ var AWS = require('aws-sdk');
 var express = require('express');
 var bodyParser = require('body-parser');
 var schedule = require('node-schedule');
+cors = require('cors');
 
 AWS.config.region = process.env.REGION;
 
@@ -26,8 +27,11 @@ var app = express();
 
 app.set('view engine', 'ejs');
 app.use('/static', express.static(__dirname + '/static'));
+app.use('/', express.static(__dirname + '/static'));
 //app.use(express.static('static'));
 app.set('views', __dirname + '/views');
+
+app.use(cors());
 app.use(bodyParser.urlencoded({extended:false}));
 
 app.get('/', function(req, res) {
@@ -38,7 +42,13 @@ app.get('/', function(req, res) {
     });
 });
 
-var port = process.env.PORT || 8080;
+app.get('/vast', function(req, res) {
+    res.setHeader('content-type', 'text/xml');
+    var query = require('url').parse(req.url,true).query;
+    res.render('vast',{query:query});
+});
+
+var port = process.env.PORT || 3000;
 var counter = 0;
 
 function sendSNSTopic(msg, subj, topic) {
@@ -48,7 +58,7 @@ function sendSNSTopic(msg, subj, topic) {
         'TopicArn': topic
     }, function(err, data) {
         if (err) {
-            console.log(subj,' SNS Error: ' + err);
+            // console.log(subj,' SNS Error: ' + err);
         } else {
             console.log(subj, ' SNS Success: ');
             console.log(data);
