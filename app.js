@@ -128,9 +128,13 @@ app.get('/', function(req, res) {
       // 4. redirect
       res.redirect(macrosArray.join(""))
     });
-    
-    
-    
+
+});
+
+app.get('/wrapper', function(req, res) {
+    res.setHeader('content-type', 'text/xml');
+    var q = require('url').parse(req.url,true).query;
+    res.render('wrapper',{q:q});
 });
 
 app.get('/vast', function(req, res) {
