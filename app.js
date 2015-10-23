@@ -91,7 +91,10 @@ app.get('/', function(req, res) {
       console.log('macrosArray', macrosArray)
       for (var i=1; i<macrosArray.length; i++) {
         var macro = macrosArray[i].split("_")[0].toLowerCase()
-        macrosArray[i] = "="+q[macro]+macrosArray[i].split("_")[1]
+        if (q[macro]) {
+            macrosArray[i] = "="+q[macro]+macrosArray[i].split("_")[1]    
+        }
+        
       }
       res.redirect(macrosArray.join(""))
     });
