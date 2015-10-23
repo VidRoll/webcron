@@ -82,24 +82,25 @@ app.get('/', function(req, res) {
       console.error("unable to download:", err.stack);
     });
     downloader.on('progress', function() {
-      console.log("progress", downloader.progressAmount, downloader.progressTotal);
+      //console.log("progress", downloader.progressAmount, downloader.progressTotal);
     });
     // 2. parse file for first url in entities array
     downloader.on('end', function() {
+      // 3. based on url, create redirect
       var url = JSON.parse(fs.readFileSync(file),"utf8").entities[0];
       var macrosArray = url.split("=_")
-      console.log('macrosArray', macrosArray)
+      //console.log('macrosArray', macrosArray)
       for (var i=1; i<macrosArray.length; i++) {
-        var macro = macrosArray[i].split("_")[0].toLowerCase()
-        if (q[macro]) {
-            macrosArray[i] = "="+q[macro]+macrosArray[i].split("_")[1]    
-        }
-        
+        var macro = macrosArray[i].split("_&")[0].toLowerCase()
+        //console.log('macro', macro)
+        macrosArray[i] = "="+q[macro]+"&"+macrosArray[i].split("_&")[1]  
       }
+      //console.log('macrosArray', macrosArray)
+      // 4. redirect
       res.redirect(macrosArray.join(""))
     });
-    // 3. based on url, create redirect
-    // 4. redirect
+    
+    
     
 });
 
