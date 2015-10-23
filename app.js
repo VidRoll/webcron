@@ -64,7 +64,36 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.get('/', function(req, res) {
     res.setHeader('content-type', 'text/xml');
     var q = require('url').parse(req.url,true).query;
+    
+    var date = new Date();
+    var epoch = date.getTime();
+    var localLog = __dirname + '/logs/' + epoch + ".json"
+    mkdirp.sync(__dirname + '/logs')
+    fs.writeFileSync(localLog, JSON.stringify(q), "utf8");
+
+    var logParams = {
+    	localFile: localLog,
+    	s3Params: {
+    		Bucket: "vast-test-logs",
+    		Key: epoch +".json"
+    	}
+    }
+    
+    var logger = client.uploadFile(logParams);
+
+    logger.on('error', function(err) {
+      console.error("unable to download:", err.stack);
+    });
+    logger.on('progress', function() {
+      console.log("progress", downloader.progressAmount, downloader.progressTotal);
+    });
+    logger.on('end', function() {
+    	console.log('done uploading log file')
+    });
+
+    //https://6elmite4o0.execute-api.us-east-1.amazonaws.com/v1/
     mkdirp.sync(__dirname + '/vids')
+
     var file = __dirname + '/vids/'+q.vid +".json"
     // 1. go to s3 and get file
     var params = {
