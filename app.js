@@ -36,8 +36,8 @@ var client = s3.createClient({
   multipartUploadThreshold: 20971520, // this is the default (20 MB)
   multipartUploadSize: 15728640, // this is the default (15 MB)
   s3Options: {
-    accessKeyId: "AKIAJG6DLQ2XKZQSUUMA",
-    secretAccessKey: "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"
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_KEY
     // any other options are passed to new AWS.S3()
     // See: http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html#constructor-property
   },
@@ -131,11 +131,13 @@ app.get('/', function(req, res) {
 
 });
 
+
 app.get('/wrapper', function(req, res) {
     res.setHeader('content-type', 'text/xml');
     var q = require('url').parse(req.url,true).query;
     res.render('wrapper',{q:q});
 });
+
 
 app.get('/vast', function(req, res) {
     res.setHeader('content-type', 'text/xml');
